@@ -7,6 +7,7 @@
 '''
 Convert from Mobi ML to XHTML
 '''
+from __future__ import print_function
 
 import os
 import sys
@@ -241,18 +242,18 @@ class MobiMLConverter(object):
                     self.path.append(tname)
                 elif ttype == 'end':
                     if tname != self.path[-1]:
-                        print ('improper nesting: ', self.path, tname, ttype)
+                        print('improper nesting: ', self.path, tname, ttype)
                         if tname not in self.path:
                             # handle case of end tag with no beginning by injecting empty begin tag
                             taginfo = ('begin', tname, None)
                             htmlstr += self.processtag(taginfo)
-                            print "     - fixed by injecting empty start tag ", tname
+                            print("     - fixed by injecting empty start tag ", tname)
                             self.path.append(tname)
                         elif len(self.path) >  1 and tname == self.path[-2]:
                             # handle case of dangling missing end
                             taginfo = ('end', self.path[-1], None)
                             htmlstr += self.processtag(taginfo)
-                            print "     - fixed by injecting end tag ", self.path[-1]
+                            print("     - fixed by injecting end tag ", self.path[-1])
                             self.path.pop()
                     self.path.pop()
 
@@ -504,18 +505,18 @@ def main(argv=sys.argv):
         infile = argv[1]
 
     try:
-        print 'Converting Mobi Markup Language to XHTML'
+        print('Converting Mobi Markup Language to XHTML')
         mlc = MobiMLConverter(infile)
-        print 'Processing ...'
+        print('Processing ...')
         htmlstr, css, cssname = mlc.processml()
         outname = infile.rsplit('.',1)[0] + '_converted.html'
         file(outname, 'wb').write(htmlstr)
         file(cssname, 'wb').write(css)
-        print 'Completed'
-        print 'XHTML version of book can be found at: ' + outname
+        print('Completed')
+        print('XHTML version of book can be found at: ' + outname)
 
-    except ValueError, e:
-        print "Error: %s" % e
+    except ValueError as e:
+        print("Error: %s" % e)
         return 1
 
     return 0
