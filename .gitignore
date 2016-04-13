@@ -45,3 +45,6 @@ mobi8/
 
 # Folder to direct output to when testing command-line (will be ignored by git)
 testout/
+
+# Directories created by setup.py install
+build/
